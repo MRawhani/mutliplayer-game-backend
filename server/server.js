@@ -29,7 +29,6 @@ io.on("connection", (socket) => {
   const cooldown = createCooldown(0);
 
   const { makeTurn, getBoard, clear } = createBoard(50);
-  io.emit("board", getBoard());
 
   socket.on("join", ({ name, room }, callback) => {
     makeTurnG = makeTurn;
@@ -47,6 +46,7 @@ io.on("connection", (socket) => {
     console.log("nouvel utilisateur", user);
 
     io.to(room).emit("updateUserList", users.getUserList(room));
+    io.to(room).emit("board", getBoard());
 
     socket.emit(
       "newMessage",
@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
   const onTurn = ({ x, y }) => {
     //  const user = users.getUser(socket.id)
     const user = users.getUser(socket.id);
-    users.lastUser(socket.id,user.room)
+    users.lastUser(socket.id,user?user.room:'')
     //  users.lastUser(socket.id,user.room)
 
     if (user && !user.last) {
