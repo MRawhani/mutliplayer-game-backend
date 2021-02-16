@@ -30,7 +30,7 @@ const createBoard = (size) => {
         const count = numMatches(x, y, dx, dy) +
           numMatches(x, y, -dx, -dy) + 1;
 
-        if (count > 4) {
+        if (count > 2) {
           return true;
         }
       }

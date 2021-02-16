@@ -1,5 +1,5 @@
-const generateMessage = (from, text) => {
-  return { from, text, createAt: new Date().getTime() }
+const generateMessage = (from, text,color='#000000') => {
+  return { from, text, createAt: new Date().getTime() ,color}
 }
 
 const generateLocationMessage = (from, latitude, longitude) => {

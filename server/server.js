@@ -42,10 +42,13 @@ io.on("connection", (socket) => {
 
     socket.join(room);
     users.removeUser(socket.id);
-    const user = users.addUser(socket.id, name, room);
+    const user = users.addUser(socket.id, name, room,color);
     console.log("nouvel utilisateur", user);
 
+    io.to(socket.id).emit("active", socket.id);
     io.to(room).emit("updateUserList", users.getUserList(room));
+    users.removeLast(room)
+
     io.to(room).emit("board", getBoard());
 
     socket.emit(
@@ -75,8 +78,12 @@ io.on("connection", (socket) => {
 
         if (playerWin) {
           io.to(socket.id).emit("message", "YOU WIN");
+          io.to(socket.id).emit("win", "YOU WIN");
           io.to(room).emit("message", "new round");
+          socket.broadcast.to(room).emit("loose", "new round");
           clearG();
+      users.removeLast(room)
+
           io.to(room).emit("board");
         }
       }
@@ -103,11 +110,11 @@ io.on("connection", (socket) => {
     if (user) {
       console.log("createMessage", user);
       const { room, name } = user;
-      io.to(room).emit("newMessage", generateMessage(name, msg.text));
+      io.to(room).emit("newMessage", generateMessage(name, msg.text,user.color||"#000000"));
     }
 
     callback();
-  });
+  }); 
 
   socket.on("createOffer", (data) => {
     const user = users.getUser(socket.id);

@@ -3,24 +3,34 @@ class Users {
     this.users = [],
     this.last={}
   }
-  addUser(id, name, room) {
-    const user = { id, name, room }
+  addUser(id, name, room,color='#000') {
+    const user = { id, name, room,color }
     this.users.push(user)
     return user
   }
   lastUser(id ,room){
-   // this.last = [{ id, name, room }]
-this.users.forEach((user,i) => {
-     if (user.id === id){
-
-       this.users[i]={...user,last:true}
-     } else if(user.room===room){
-      this.users[i]={...user,last:false}
-
-     }
-      
-    })
-  }
+    // this.last = [{ id, name, room }]
+ this.users.forEach((user,i) => {
+      if (user.id === id){
+ 
+        this.users[i]={...user,last:true}
+      } else if(user.room===room){
+       this.users[i]={...user,last:false}
+ 
+      }
+       
+     })
+   }
+   removeLast(room){
+    // this.last = [{ id, name, room }]
+ this.users.forEach((user,i) => {
+    if(user.room===room){
+       this.users[i]={...user,last:false}
+ 
+      }
+       
+     })
+   }
   removeUser(id) {
     const user = this.getUser(id)
     if (user) {
@@ -34,7 +44,7 @@ this.users.forEach((user,i) => {
   }
   getUserList(room) {
     const users = this.users.filter(user => user.room === room)
-    const namesArray = users.map(user => user.name)
+    const namesArray = users.map(user => ({name:user.name,color:user.color,id:user.id}))
     return namesArray
   }
 }
