@@ -10,8 +10,8 @@ const { generateMessage, generateLocationMessage } = require("./utils/message");
 const { isRealString } = require("./utils/validation");
 const { Users } = require("./utils/users");
 
-const publicPath = path.join(__dirname, "../public");
-const port = process.env.PORT || 3000;
+// const publicPath = path.join(__dirname, "../public");
+const port = process.env.PORT || 3002;
 
 const app = express();
 const server = http.createServer(app);
@@ -19,7 +19,7 @@ const io = socketIO(server);
 
 const users = new Users();
 
-app.use(express.static(publicPath));
+// app.use(express.static(publicPath));
 
 io.on("connection", (socket) => {
   console.log("New user connected");
